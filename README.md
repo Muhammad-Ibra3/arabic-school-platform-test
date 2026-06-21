@@ -82,7 +82,30 @@ The script will:
 
 After this, you should be able to SSH using the key at `~/.ssh/ec2-test`.
 
-## 3. Set your tester IP on apply
+## 3. Initialize Terraform
+
+Clone the repo and enter the directory:
+
+```bash
+git clone https://github.com/Muhammad-Ibra3/arabic-school-platform-test.git
+cd arabic-school-platform-test
+```
+
+Initialize Terraform (downloads providers and configures the S3 backend):
+
+```bash
+terraform init
+```
+
+If you previously initialized with different backend settings:
+
+```bash
+terraform init -reconfigure
+```
+
+Continue to step 4 to set your tester IP and run `terraform apply`.
+
+## 4. Set your tester IP and apply
 
 All tester IP variables default to `null`, so you do **not** need a `terraform.tfvars` file. Each person passes **only their own** variable when running Terraform.
 
@@ -122,27 +145,6 @@ Replace `YOUR_PUBLIC_IP/32` with your actual address. Leave the other tester var
 terraform apply \
   -var='tester1_ip=MUHAMMAD_IP/32' \
   -var='tester2_ip=SAKIB_IP/32'
-```
-
-## 4. Initialize and apply Terraform
-
-Clone the repo and enter the directory:
-
-```bash
-git clone <repository-url>
-cd terraform-ec2
-```
-
-Initialize Terraform (downloads providers and configures the S3 backend):
-
-```bash
-terraform init
-```
-
-If you previously initialized with different backend settings:
-
-```bash
-terraform init -reconfigure
 ```
 
 Review the plan (include your `-var` flag):
