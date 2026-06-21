@@ -77,7 +77,7 @@ variable "project_name" {
 variable "instance_name" {
   description = "Name tag for the EC2 instance."
   type        = string
-  default     = "app-server"
+  default     = "gateway2khair-test-server"
 }
 
 variable "key_name" {
