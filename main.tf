@@ -278,6 +278,9 @@ resource "aws_instance" "app" {
   # Required so optional tester IPs can reach SSH/HTTP/HTTPS endpoints.
   associate_public_ip_address = true
 
+  user_data                   = file("${path.module}/user_data.sh")
+  user_data_replace_on_change = false
+
   monitoring = true
 
   metadata_options {
@@ -302,7 +305,7 @@ resource "aws_instance" "app" {
   }
 
   lifecycle {
-    ignore_changes = [ami]
+    ignore_changes = [ami, user_data]
   }
 }
 
@@ -342,5 +345,5 @@ output "allowed_tester_ips" {
 
 output "ssh_connect_command" {
   description = "SSH command to connect to the instance."
-  value       = "ssh -i ~/.ssh/${var.key_name}.pem -o StrictHostKeyChecking=accept-new ${var.ssh_user}@${aws_instance.app.public_ip}"
+  value       = "ssh -i '${var.key_name}.pem' -o StrictHostKeyChecking=accept-new ${var.ssh_user}@${aws_instance.app.public_ip}"
 }
