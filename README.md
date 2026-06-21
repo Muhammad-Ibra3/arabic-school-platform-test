@@ -21,7 +21,7 @@ If your home or office IP changes, pass **your** variable again on the next `ter
 - One EC2 instance (`app-server`) in the default VPC
 - A security group that allows inbound SSH, HTTP, and HTTPS only from configured tester IPs
 - Outbound HTTP/HTTPS for package updates
-- SSH access via the `ec2-test` key pair (already registered in AWS)
+- SSH access via the `ec2-key.pem` key pair (already registered in AWS)
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ Install these before you start:
 You also need:
 
 - AWS credentials with permission to create EC2 instances, security groups, and read/write the state bucket
-- The **private half** of the `ec2-test` SSH key (ask the project owner if you do not have it)
+- The **private half** of the `ec2-key.pem` SSH key (ask the project owner if you do not have it)
 
 ## 1. Configure the AWS CLI
 
@@ -60,27 +60,27 @@ aws sts get-caller-identity
 
 You should see your account ID and user/role ARN. If this fails, fix credentials before running Terraform.
 
-## 2. Set up your SSH key (`setup-ec2-test-key.sh`)
+## 2. Set up your SSH key (`setup-ec2-key.sh`)
 
-The EC2 instance uses the AWS key pair named **`ec2-test`**. This script installs the matching **private** key on your machine so you can SSH in.
+The EC2 instance uses the AWS key pair named **`ec2-key.pem`**. This script installs the matching **private** key on your machine so you can SSH in.
 
 From the project directory:
 
 ```bash
-chmod +x setup-ec2-test-key.sh
-./setup-ec2-test-key.sh
+chmod +x setup-ec2-key.sh
+./setup-ec2-key.sh
 ```
 
 The script will:
 
 1. Ask whether you are on **Mac** or **Linux / WSL**
 2. Create `~/.ssh` if it does not exist (mode `700`)
-3. If `~/.ssh/ec2-test` already exists, ask whether to delete and replace it
-4. Prompt you to **paste the private key** (paste the full key, then press **Ctrl+D**)
-5. Write the key to `~/.ssh/ec2-test` and derive `~/.ssh/ec2-test.pub`
+3. If `~/.ssh/ec2-key.pem` already exists, ask whether to delete and replace it
+4. Prompt you to **paste the private key** (paste the full key, then press **Enter**)
+5. Write the private key to `~/.ssh/ec2-key.pem`
 6. Add the key to your SSH agent (and macOS Keychain on Mac)
 
-After this, you should be able to SSH using the key at `~/.ssh/ec2-test`.
+After this, you should be able to SSH using the key at `~/.ssh/ec2-key.pem`.
 
 ## 3. Initialize Terraform
 
@@ -168,7 +168,7 @@ Type `yes` when prompted. When it finishes, note the outputs — especially `pub
 Connect to the server:
 
 ```bash
-ssh -i ~/.ssh/ec2-test ubuntu@<public_ip>
+ssh -i ~/.ssh/ec2-key.pem ubuntu@<public_ip>
 ```
 
 The default SSH user is `ubuntu` (matching the AMI in use). Use the `ssh_connect_command` output from Terraform if you prefer a copy-paste command.
@@ -222,7 +222,7 @@ Partial applies are normal: Terraform reconciles toward the desired state on the
 | File | Purpose |
 |------|---------|
 | `main.tf` | EC2 instance, security group, variables, and outputs |
-| `setup-ec2-test-key.sh` | Installs the `ec2-test` private key locally |
+| `setup-ec2-key.sh` | Installs the `ec2-key.pem` private key locally |
 
 ## Security notes
 
@@ -231,4 +231,4 @@ Partial applies are normal: Terraform reconciles toward the desired state on the
 
 ---
 
-Questions about access or the `ec2-test` key? Reach out to the project owner. Happy building.
+Questions about access or the `ec2-key.pem` key? Reach out to the project owner. Happy building.

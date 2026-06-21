@@ -83,7 +83,7 @@ variable "instance_name" {
 variable "key_name" {
   description = "Name of an existing EC2 key pair in this region. Required for SSH access."
   type        = string
-  default     = "ec2-test"
+  default     = "ec2-key.pem"
 }
 
 variable "ssh_user" {
@@ -342,5 +342,5 @@ output "allowed_tester_ips" {
 
 output "ssh_connect_command" {
   description = "SSH command to connect to the instance."
-  value       = "ssh -i ~/.ssh/${var.key_name}.pem ${var.ssh_user}@${aws_instance.app.public_ip}"
+  value       = "ssh -i ~/.ssh/${var.key_name} ${var.ssh_user}@${aws_instance.app.public_ip}"
 }
