@@ -342,5 +342,5 @@ output "allowed_tester_ips" {
 
 output "ssh_connect_command" {
   description = "SSH command to connect to the instance."
-  value       = "ssh -i '${var.key_name}' ${var.ssh_user}@${aws_instance.app.public_ip} -y"
+  value       = "ssh -i ~/.ssh/${var.key_name}.pem -o StrictHostKeyChecking=accept-new ${var.ssh_user}@${aws_instance.app.public_ip}"
 }

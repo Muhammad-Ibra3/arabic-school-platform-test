@@ -21,7 +21,7 @@ If your home or office IP changes, pass **your** variable again on the next `ter
 - One EC2 instance (`app-server`) in the default VPC
 - A security group that allows inbound SSH, HTTP, and HTTPS only from configured tester IPs
 - Outbound HTTP/HTTPS for package updates
-- SSH access via the `ec2-key.pem` key pair (already registered in AWS)
+- SSH access via the `ec2-key` key pair (already registered in AWS)
 
 ## Prerequisites
 
@@ -168,7 +168,7 @@ Type `yes` when prompted. When it finishes, note the outputs — especially `pub
 Connect to the server:
 
 ```bash
-ssh -i ~/.ssh/ec2-key.pem ubuntu@<public_ip>
+ssh -i ~/.ssh/ec2-key.pem -o StrictHostKeyChecking=accept-new ubuntu@<public_ip>
 ```
 
 The default SSH user is `ubuntu` (matching the AMI in use). Use the `ssh_connect_command` output from Terraform if you prefer a copy-paste command.
